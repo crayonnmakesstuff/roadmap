@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ryaanu's 2-Year CS Roadmap</title>
+  <title>Ryaanu's 2-Year CS Roadmap</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -193,8 +193,8 @@
 <body>
 
 <header>
-  <h1>ryaanu's 2-Year CS Roadmap</h1>
-  <p>ong i just want out of india bro 🙏</p>
+  <h1>Ryaanu's 2-Year CS Roadmap</h1>
+  <p>A calm, strategic checklist from the end of Class 10 to CS admissions in Europe, the US, and India.</p>
 </header>
 
 <div class="progress-wrap">
@@ -206,8 +206,29 @@
 
 <main id="roadmap"></main>
 
+<section style="max-width:1100px;margin:40px auto 0;padding:0 20px;">
+  <div class="phase">
+    <h2>University Applications Tracker <span class="tag">Safety / Match / Reach</span></h2>
+    <div class="subtitle">Track where you applied, current status, and final decisions.</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:separate;border-spacing:0 10px;">
+        <thead>
+          <tr style="color:var(--muted);font-size:0.85rem;text-align:left;">
+            <th>University</th>
+            <th>Country</th>
+            <th>Category</th>
+            <th>Application Status</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody id="uniTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <footer>
-  made by ryaanu himself ofc trademark 2026
+  Built for long-term consistency, not burnout. 🚀
 </footer>
 
 <script>
@@ -350,6 +371,76 @@ data.forEach((phase, pIndex) => {
 });
 
 updateProgress();
+const universities = [
+  // SAFETIES
+  { name: "St. Xavier's College", country: "India", tier: "Safety" },
+  { name: "Somaiya Vidyavihar", country: "India", tier: "Safety" },
+
+  // MATCH
+  { name: "Technical University of Cluj-Napoca (TUCN)", country: "Romania", tier: "Match" },
+  { name: "University of Bucharest", country: "Romania", tier: "Match" },
+  { name: "Warsaw University of Technology", country: "Poland", tier: "Match" },
+
+  // REACH / VERY REACH
+  { name: "Technical University of Munich (TUM)", country: "Germany", tier: "Reach" },
+  { name: "ETH Zurich", country: "Switzerland", tier: "Reach" },
+  { name: "National University of Singapore (NUS)", country: "Singapore", tier: "Reach" },
+  { name: "University of Cambridge", country: "UK", tier: "Reach" },
+  { name: "University of Melbourne", country: "Australia", tier: "Reach" },
+  { name: "University of Sydney", country: "Australia", tier: "Reach" }
+];
+
+const uniState = JSON.parse(localStorage.getItem('uniState') || '{}');
+const uniTable = document.getElementById('uniTable');
+
+universities.forEach((u, idx) => {
+  const row = document.createElement('tr');
+  row.style.background = 'rgba(255,255,255,0.02)';
+  row.style.borderRadius = '12px';
+
+  const appKey = `app-${idx}`;
+  const decKey = `dec-${idx}`;
+
+  row.innerHTML = `
+    <td>${u.name}</td>
+    <td>${u.country}</td>
+    <td><span class="tag">${u.tier}</span></td>
+    <td>
+      <select id="${appKey}" style="background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px;">
+        <option value="Not Applied">Not Applied</option>
+        <option value="Preparing">Preparing</option>
+        <option value="Applied">Applied</option>
+      </select>
+    </td>
+    <td>
+      <select id="${decKey}" style="background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px;">
+        <option value="Pending">Pending</option>
+        <option value="Offer">Offer</option>
+        <option value="Waitlist">Waitlist</option>
+        <option value="Reject">Reject</option>
+      </select>
+    </td>
+  `;
+
+  uniTable.appendChild(row);
+
+  const appSelect = row.querySelector(`#${appKey}`);
+  const decSelect = row.querySelector(`#${decKey}`);
+
+  if (uniState[appKey]) appSelect.value = uniState[appKey];
+  if (uniState[decKey]) decSelect.value = uniState[decKey];
+
+  appSelect.addEventListener('change', () => {
+    uniState[appKey] = appSelect.value;
+    localStorage.setItem('uniState', JSON.stringify(uniState));
+  });
+
+  decSelect.addEventListener('change', () => {
+    uniState[decKey] = decSelect.value;
+    localStorage.setItem('uniState', JSON.stringify(uniState));
+  });
+});
+
 </script>
 
 </body>
